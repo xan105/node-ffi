@@ -1,0 +1,89 @@
+{
+  "name": "@xan105/ffi",
+  "version": "0.1.0",
+  "description": "Foreign Function Interface Helper.",
+  "type": "module",
+  "exports": {
+    "./ffi-napi": {
+      "types": "",
+      "default": "./lib/ffi-napi.js"
+    },
+    "./ffi-napi/types": {
+      "types": "",
+      "default": "./lib/ffi-napi/types.js"
+    },
+    "./koffi": {
+      "types": "",
+      "default": "./lib/koffi.js"
+    },
+    "./koffi/types": {
+      "types": "",
+      "default": "./lib/koffi/types.js"
+    }
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "scripts": {
+    "lint": "eslint \"./lib/**/*.{js,mjs}\" \"./types/**/*.d.ts\"",
+    "check": "tsc --noemit --checkjs",
+    "declare": "tsc --declaration --emitDeclarationOnly --outDir \"./types\""
+  },
+  "keywords": [
+    "ffi",
+    "ffi-napi",
+    "koffi",
+    "dlopen"
+  ],
+  "author": {
+    "name": "Anthony Beaumont",
+    "email": "dev.xan105@outlook.be",
+    "url": "https://xan105.com/"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xan105/node-ffi.git"
+  },
+  "bugs": {
+    "url": "https://github.com/xan105/node-ffi/issues"
+  },
+  "homepage": "https://github.com/xan105/node-ffi#readme",
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/xan105"
+    },
+    {
+      "type": "paypal",
+      "url": "https://www.paypal.me/xan105"
+    },
+    {
+      "type": "patreon",
+      "url": "https://www.patreon.com/xan105"
+    }
+  ],
+  "devDependencies": {
+    "@types/node": "^18.7.23",
+    "@typescript-eslint/eslint-plugin": "^5.38.1",
+    "@typescript-eslint/parser": "^5.38.1",
+    "eslint": "^8.22.0",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "@xan105/error": "^1.4.3",
+    "@xan105/is": "^2.7.1"
+  },
+  "peerDependencies": {
+    "ffi-napi": "^4.0.3",
+    "koffi": "^2.3.4"
+  },
+  "peerDependenciesMeta": {
+    "ffi-napi": {
+      "optional": true
+    },
+    "koffi": {
+      "optional": true
+    }
+  }
+}
