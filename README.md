@@ -44,7 +44,9 @@ MessageBoxA(null, "Hello World!", "Message", MB_ICONINFORMATION);
 Install
 =======
 
-`npm install @xan105/ffi`
+```
+npm install @xan105/ffi
+```
 
 Please note that `ffi-napi` and `koffi` are optional peer dependencies.<br />
 Install the one you wish to use yourself (or both 🙃).
@@ -139,7 +141,7 @@ If you ever use ffi-napi `ffi.Library()` this will be familiar.
   }
 ```
   
-  When `nonblocking` is `true` this will return the promisified `async()` method of the corresponding symbol (see corresponding ffi library asynchronous calling). The rest is the same as for `load()`.
+  When `nonblocking` (default false) is `true` this will return the promisified `async()` method of the corresponding symbol (see corresponding ffi library asynchronous calling). The rest is the same as for `load()`.
   
 - option?: object
 

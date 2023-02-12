@@ -5,19 +5,19 @@
   "type": "module",
   "exports": {
     "./ffi-napi": {
-      "types": "",
+      "types": "./types/ffi-napi.d.ts",
       "default": "./lib/ffi-napi.js"
     },
     "./ffi-napi/types": {
-      "types": "",
+      "types": "./types/ffi-napi/types.d.ts",
       "default": "./lib/ffi-napi/types.js"
     },
     "./koffi": {
-      "types": "",
+      "types": "./types/koffi.d.ts",
       "default": "./lib/koffi.js"
     },
     "./koffi/types": {
-      "types": "",
+      "types": "./types/koffi/types.d.ts",
       "default": "./lib/koffi/types.js"
     }
   },
@@ -72,7 +72,7 @@
   },
   "dependencies": {
     "@xan105/error": "^1.4.3",
-    "@xan105/is": "^2.7.1"
+    "@xan105/is": "^2.8.0"
   },
   "peerDependencies": {
     "ffi-napi": "^4.0.3",
