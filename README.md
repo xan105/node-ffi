@@ -1,11 +1,10 @@
 About
 =====
 
-Foreign Function Interface helper.<br />
-Provides a friendly abstraction/API for:
+Foreign Function Interface helper. Provides a friendly abstraction/API for:
 
-- [ffi-napi](https://www.npmjs.com/package/ffi-napi) | MIT
-- [koffi](https://www.npmjs.com/package/koffi) | LGPL3
+- [ffi-napi](https://www.npmjs.com/package/ffi-napi) (MIT)
+- [koffi](https://www.npmjs.com/package/koffi) (LGPL3)
 
 Example
 =======
@@ -65,7 +64,7 @@ import ... from "@xan105/ffi/ffi-napi";
 import ... from "@xan105/ffi/koffi";
 ```
 
-**types**
+**Types**
 
 💡 The FFI Library's primitive types as well as corresponding alias such as Windows specific types (DWORD,...) are exposed under the `types` namespace for convenience.
 
