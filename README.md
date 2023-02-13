@@ -12,7 +12,7 @@ Example
 Loading a library with Deno like syntax
 
 ```js
-import { dlopen } from "@xan105/ffi/ffi-napi";
+import { dlopen } from "@xan105/ffi/napi";
 //OR
 import { dlopen } from "@xan105/ffi/koffi";
 
@@ -28,14 +28,12 @@ lib.ceil(1.5); // 2
 Calling from a library
 
 ```js
-import { load, types } from "@xan105/ffi/ffi-napi";
-const { LPCSTR } = types;
+import { load, types } from "@xan105/ffi/napi";
 //OR
-import { load } from "@xan105/ffi/koffi";
-import { LPCSTR } from "@xan105/ffi/koffi/types";
+import { load, types} from "@xan105/ffi/koffi";
 
 const call = load("user32.dll", { abi: "stdcall" });
-const MessageBoxA = call("MessageBoxA", "int", ["void *", LPCSTR, LPCSTR, "uint"]);
+const MessageBoxA = call("MessageBoxA", "int", ["void *", types.LPCSTR, types.LPCSTR, "uint"]);
 
 const MB_ICONINFORMATION = 0x40;
 MessageBoxA(null, "Hello World!", "Message", MB_ICONINFORMATION);
@@ -61,18 +59,9 @@ API
 💡 This lib doesn't have a default entry point. Choose the export corresponding to your liking.
 
 ```js
-import ... from "@xan105/ffi/ffi-napi";
+import ... from "@xan105/ffi/napi";
 //OR
 import ... from "@xan105/ffi/koffi";
-```
-
-**Types**
-
-💡 The FFI Library's primitive types as well as corresponding alias such as Windows specific types (DWORD,...) are exposed under the `types` namespace for convenience.
-
-```js
-import { types } from "@xan105/ffi/koffi/";
-import { DWORD, i32, uint8 } from "@xan105/ffi/koffi/types";
 ```
 
 ### Named export
@@ -95,7 +84,7 @@ ABI convention to use. Use this when you need to ex: winapi x86 requires "stdcal
 **Return**
 
 ```ts
-function(name: string | number, result: any, parameters: any[]);
+function(name: string | number, result: any, parameters: any[]): any;
 ```
 
 💡 `Koffi` can call by ordinal (name:number)
@@ -141,7 +130,7 @@ If you ever use ffi-napi `ffi.Library()` this will be familiar.
   }
 ```
   
-  When `nonblocking` (default false) is `true` this will return the promisified `async()` method of the corresponding symbol (see corresponding ffi library asynchronous calling). The rest is the same as for `load()`.
+  When `nonblocking` is `true` (default false) this will return the promisified `async()` method of the corresponding symbol (see corresponding ffi library asynchronous calling). The rest is the same as for `load()`.
   
 - option?: object
 
@@ -167,4 +156,22 @@ const lib = dlopen("xinput1_4", {
 }, { abi: "stdcall" });
 
 await lib.XInputEnable(1);
+```
+
+#### `const types: object`
+
+The FFI Library's primitive types as well as corresponding alias such as Windows specific types (DWORD,...) are exposed for convenience.
+
+```js
+import { types } from "@xan105/ffi/napi";
+//or
+import { types } from "@xan105/ffi/koffi";
+```
+
+When using `koffi` alias are also set with `koffi.alias()`.
+
+```js
+import { load } from "@xan105/ffi/koffi";
+const call = load("user32.dll", { abi: "stdcall" });
+const MessageBoxA = call("MessageBoxA", "int", ["void *", "LPCSTR", "LPCSTR", "uint"]);
 ```
