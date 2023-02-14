@@ -186,7 +186,7 @@ This is a class wrapper to the FFI library's callback function(s) inspired by De
 
 ##### Constructor
   
-  ffi-napi: `(definition: { result: unknown, parameters: unknown[] }, callback?: Function)`
+  ffi-napi: `(definition: { result: unknown, parameters: unknown[] }, callback?: Function)`<br/>
   koffi: `(name: string, definition: { result: unknown, parameters: unknown[] }, callback?: Function)`
   
   ⚠️ `Koffi` requires an additional `name: string` argument.
@@ -233,6 +233,6 @@ library.doSomething();
 callback.close();
 ```
 
-#### `pointer(value: unknown, direction?: string): any
+#### `pointer(value: unknown, direction?: string): any`
 
 Just a shorthand to `ref.refType(x)` (ffi-napi) and `koffi.out/inout(koffi.pointer(x))` (koffi) to define a pointer.
