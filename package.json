@@ -1,24 +1,16 @@
 {
   "name": "@xan105/ffi",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Foreign Function Interface Helper.",
   "type": "module",
   "exports": {
-    "./ffi-napi": {
-      "types": "./types/ffi-napi.d.ts",
-      "default": "./lib/ffi-napi.js"
-    },
-    "./ffi-napi/types": {
-      "types": "./types/ffi-napi/types.d.ts",
-      "default": "./lib/ffi-napi/types.js"
+    "./napi": {
+      "types": "./types/ffi-napi/index.d.ts",
+      "default": "./lib/ffi-napi/index.js"
     },
     "./koffi": {
-      "types": "./types/koffi.d.ts",
-      "default": "./lib/koffi.js"
-    },
-    "./koffi/types": {
-      "types": "./types/koffi/types.d.ts",
-      "default": "./lib/koffi/types.js"
+      "types": "./types/koffi/index.d.ts",
+      "default": "./lib/koffi/index.js"
     }
   },
   "engines": {
@@ -64,6 +56,7 @@
     }
   ],
   "devDependencies": {
+    "@types/ffi-napi": "^4.0.7",
     "@types/node": "^18.7.23",
     "@typescript-eslint/eslint-plugin": "^5.38.1",
     "@typescript-eslint/parser": "^5.38.1",
