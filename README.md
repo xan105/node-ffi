@@ -84,7 +84,7 @@ ABI convention to use. Use this when you need to ex: winapi x86 requires "stdcal
 **Return**
 
 ```ts
-function(name: string | number, result: any, parameters: any[]): any;
+function(name: string | number, result: unknown, parameters: unknown[]): any;
 ```
 
 💡 `Koffi` can call by ordinal (name:number)
@@ -175,3 +175,62 @@ import { load } from "@xan105/ffi/koffi";
 const call = load("user32.dll", { abi: "stdcall" });
 const MessageBoxA = call("MessageBoxA", "int", ["void *", "LPCSTR", "LPCSTR", "uint"]);
 ```
+
+#### `class Callback`
+
+Create a callback to be called at a later time (registered callback).
+
+This is a class wrapper to the FFI library's callback function(s) inspired by Deno FFI `UnsafeCallback class` syntax.
+
+##### Constructor
+  
+  ffi-napi: `(definition: { result: unknown, parameters: unknown[] }, callback?: Function)`
+  koffi: `(name: string, definition: { result: unknown, parameters: unknown[] }, callback?: Function)`
+  
+  ⚠️ `Koffi` requires an additional `name: string` argument.
+  
+##### Properties
+  
+  - `pointer: unknown`
+  
+  The pointer to the callback.
+  
+  - `definition: unknown`
+  
+  The definition of the callback.
+  
+##### Methods
+  
+  - `close(): void`
+  
+  Dispose of the callback. Remove function pointer associated with this instance.
+
+##### Example
+  
+```js
+const callback = new Callback(
+  { parameters: [], result: "void" },
+  () => {},
+);
+
+const library = dlopen("./callback.so", {
+    setCallback: {
+      parameters: [callback.definition],
+      result: "void",
+    },
+    doSomething(): {
+      parameters: [],
+      result: "void",
+    },
+});
+
+library.setCallback(callback.pointer);
+library.doSomething();
+
+// After callback is no longer needed
+callback.close();
+```
+
+#### `pointer(value: unknown, direction?: string): any
+
+Just a shorthand to `ref.refType(x)` (ffi-napi) and `koffi.out/inout(koffi.pointer(x))` (koffi) to define a pointer.

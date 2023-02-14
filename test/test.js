@@ -1,9 +1,9 @@
-//import { dlopen, types } from "../lib/ffi-napi/index.js";
-import { dlopen } from "../lib/koffi/index.js";
+import { dlopen, types, Callback } from "../lib/ffi-napi/index.js";
+//import { dlopen, types, Callback } from "../lib/koffi/index.js";
 
 const lib = dlopen("xinput1_4", {
   "XInputEnable": {
-    parameters: ["BOOL"],
+    parameters: [types.BOOL],
     nonblocking: true
   }
 }, { abi: "stdcall", ignoreMissingSymbol: false });
@@ -11,3 +11,8 @@ const lib = dlopen("xinput1_4", {
 console.log(lib);
 
 await lib.XInputEnable(1);
+
+const cb = new Callback({});
+console.log(cb.pointer);
+cb.close();
+console.log(cb.pointer);
