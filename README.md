@@ -86,10 +86,10 @@ ABI convention to use. Use this when you need to ex: winapi x86 requires "stdcal
 **Return**
 
 ```ts
-function(name: string | number, result: unknown, parameters: unknown[]): any;
+function(symbol: string | number, result: unknown, parameters: unknown[]): any;
 ```
 
-💡 `Koffi` can call by ordinal (name:number)
+💡 `Koffi` can call by ordinal (symbol:number)
 
 See the corresponding FFI library for more information on what to pass for `result` and `parameters` as they have string type parser, structure/array/pointer interface, ... and other features.
 
@@ -126,11 +126,14 @@ If you ever use ffi-napi `ffi.Library()` this will be familiar.
     name: {
       result?: any,
       parameters?: any[],
-      nonblocking?: boolean
+      nonblocking?: boolean,
+      symbol?: string | number
     },
     ...
   }
 ```
+  
+  By default the property name is used for `symbol` when omitted. Use `symbol` if you are using a different name than the symbol name or if you want to call by ordinal (Koffi).
   
   When `nonblocking` is `true` (default false) this will return the promisified `async()` method of the corresponding symbol (see corresponding ffi library asynchronous calling). The rest is the same as for `load()`.
   
