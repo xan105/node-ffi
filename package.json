@@ -1,6 +1,6 @@
 {
   "name": "@xan105/ffi",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Foreign Function Interface Helper.",
   "type": "module",
   "exports": {
@@ -60,12 +60,12 @@
     "@types/node": "^18.7.23",
     "@typescript-eslint/eslint-plugin": "^5.38.1",
     "@typescript-eslint/parser": "^5.38.1",
-    "eslint": "^8.22.0",
-    "typescript": "^4.7.4"
+    "eslint": "^8.34.0",
+    "typescript": "^4.9.5"
   },
   "dependencies": {
-    "@xan105/error": "^1.4.3",
-    "@xan105/is": "^2.8.0"
+    "@xan105/error": "^1.6.0",
+    "@xan105/is": "^2.8.1"
   },
   "peerDependencies": {
     "ffi-napi": "^4.0.3",
