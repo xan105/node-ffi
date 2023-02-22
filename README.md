@@ -239,3 +239,13 @@ callback.close();
 #### `pointer(value: unknown, direction?: string): any`
 
 Just a shorthand to `ref.refType(x)` (ffi-napi) and `koffi.out/inout(koffi.pointer(x))` (koffi) to define a pointer.
+
+#### `alloc(type: unknown): { pointer: Buffer, get: ()=> unknown }`
+
+Allocate a buffer and get the corresponding data when passing a pointer to allow the called function to manipulate memory.
+
+```js
+const number = alloc("int"); // allocate Buffer for the output data
+dylib.manipulate_number(number.pointer);
+const result = number.get();
+```

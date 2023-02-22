@@ -6,4 +6,8 @@ export class Callback {
     #private;
 }
 export function pointer(value: unknown, direction?: string): koffi.IKoffiCType;
+export function alloc(type: unknown): {
+    pointer: Buffer;
+    get: () => unknown;
+};
 import koffi from "koffi";

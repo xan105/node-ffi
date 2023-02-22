@@ -6,4 +6,9 @@ export class Callback {
     #private;
 }
 export function pointer(value: unknown): ref.Type<ref.Pointer<any>>;
+
+export function alloc(type: unknown): {
+    pointer: Buffer;
+    get: () => unknown;
+};
 import ref from "ref-napi";
