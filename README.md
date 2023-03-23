@@ -4,7 +4,7 @@ About
 Foreign Function Interface helper. Provides a friendly abstraction/API for:
 
 - [ffi-napi](https://www.npmjs.com/package/ffi-napi) (MIT)
-- [koffi](https://www.npmjs.com/package/koffi) (LGPL3)
+- [koffi](https://www.npmjs.com/package/koffi) (MIT)
 
 📦 Scoped `@xan105` packages are for my own personal use but feel free to use them.
 
