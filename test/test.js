@@ -6,7 +6,11 @@ const lib = dlopen("xinput1_4", {
     parameters: [types.BOOL],
     nonblocking: true
   }
-}, { abi: "stdcall", ignoreMissingSymbol: false });
+}, { 
+  abi: "stdcall",
+  ignoreLoadingFail: false,
+  ignoreMissingSymbol: false 
+});
 
 console.log(lib);
 
