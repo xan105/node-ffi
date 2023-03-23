@@ -51,8 +51,6 @@ npm install @xan105/ffi
 Please note that `ffi-napi` and `koffi` are optional peer dependencies.<br />
 Install the one you wish to use yourself (or both 🙃).
 
-🤓 My personal recommendation ? give `koffi` a try you won't regret it 🚀 ! 
-
 API
 ===
 
@@ -73,6 +71,11 @@ import ... from "@xan105/ffi/koffi";
 Load the given library path and return an handle function to call library's symbol(s).
 
 **Option**
+
+- `ignoreLoadingFail?: boolean` (false)
+
+Silent fail if the given library couldn't be loaded.<br />
+💡 Called symbol will be `undefined` in that case.
 
 - `ignoreMissingSymbol?: boolean` (false)
 
