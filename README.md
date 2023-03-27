@@ -192,8 +192,8 @@ This is a class wrapper to the FFI library's callback function(s) inspired by De
 
 ##### Constructor
   
-  ffi-napi: `(definition: { result: unknown, parameters: unknown[] }, callback?: Function)`<br/>
-  koffi: `(name: string, definition: { result: unknown, parameters: unknown[] }, callback?: Function)`
+  ffi-napi: `(definition: { result: unknown, parameters: unknown[] }, callback?: Function | null)`<br/>
+  koffi: `(name: string, definition: { result: unknown, parameters: unknown[] }, callback?: Function | null)`
   
   ⚠️ `Koffi` requires an additional `name: string` argument.
   
@@ -213,6 +213,10 @@ This is a class wrapper to the FFI library's callback function(s) inspired by De
   
   Dispose of the callback. Remove function pointer associated with this instance.
 
+  - `register(callback?: Function): void`
+  
+  Register the callback. If a callback was already registered with this instance it will be disposed of.
+
 ##### Example
   
 ```js
@@ -231,6 +235,33 @@ const library = dlopen("./callback.so", {
       result: "void",
     },
 });
+
+library.setCallback(callback.pointer);
+library.doSomething();
+
+// After callback is no longer needed
+callback.close();
+```
+
+You can also register the callback at a later time:
+
+```js
+const callback = new Callback(
+  { parameters: [], result: "void" }
+);
+
+const library = dlopen("./callback.so", {
+    setCallback: {
+      parameters: [callback.definition],
+      result: "void",
+    },
+    doSomething(): {
+      parameters: [],
+      result: "void",
+    },
+});
+
+callback.register(()=>{});
 
 library.setCallback(callback.pointer);
 library.doSomething();
