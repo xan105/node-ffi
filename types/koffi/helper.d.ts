@@ -1,9 +1,9 @@
 export class Callback {
-    constructor(definition: object, callback?: function | null);
+    constructor(definition: object, callback?: (unknown) => unknown | null);
     get type(): koffi.IKoffiCType;
     get pointer(): koffi.IKoffiRegisteredCallback;
     close(): void;
-    register(callback?: function): void;
+    register(callback?: (unknown) => unknown): void;
     #private;
 }
 export function pointer(value: unknown, direction?: string): koffi.IKoffiCType;

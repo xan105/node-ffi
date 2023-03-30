@@ -192,7 +192,7 @@ This is a class wrapper to the FFI library's callback function(s) inspired by De
 
 ##### Constructor
   
-  `(definition: { result: unknown, parameters: unknown[] }, callback?: function | null)`
+  `(definition: { result: unknown, parameters: unknown[] }, callback?: Function | null)`
   
 ##### Properties
   
@@ -210,7 +210,7 @@ This is a class wrapper to the FFI library's callback function(s) inspired by De
   
   Dispose of the callback. Remove function pointer associated with this instance.
 
-  - `register(callback?: function): void`
+  - `register(callback?: Function): void`
   
   Register the callback. If a callback was already registered with this instance it will be disposed of.
 
