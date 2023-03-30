@@ -192,10 +192,7 @@ This is a class wrapper to the FFI library's callback function(s) inspired by De
 
 ##### Constructor
   
-  ffi-napi: `(definition: { result: unknown, parameters: unknown[] }, callback?: Function | null)`<br/>
-  koffi: `(name: string, definition: { result: unknown, parameters: unknown[] }, callback?: Function | null)`
-  
-  ⚠️ `Koffi` requires an additional `name: string` argument.
+  `(definition: { result: unknown, parameters: unknown[] }, callback?: function | null)`
   
 ##### Properties
   
@@ -203,9 +200,9 @@ This is a class wrapper to the FFI library's callback function(s) inspired by De
   
   The pointer to the callback.
   
-  - `definition: unknown`
+  - `type: unknown`
   
-  The definition of the callback.
+  The type of the callback.
   
 ##### Methods
   
@@ -213,7 +210,7 @@ This is a class wrapper to the FFI library's callback function(s) inspired by De
   
   Dispose of the callback. Remove function pointer associated with this instance.
 
-  - `register(callback?: Function): void`
+  - `register(callback?: function): void`
   
   Register the callback. If a callback was already registered with this instance it will be disposed of.
 
@@ -227,7 +224,7 @@ const callback = new Callback(
 
 const library = dlopen("./callback.so", {
     setCallback: {
-      parameters: [callback.definition],
+      parameters: [callback.type],
       result: "void",
     },
     doSomething(): {
@@ -252,7 +249,7 @@ const callback = new Callback(
 
 const library = dlopen("./callback.so", {
     setCallback: {
-      parameters: [callback.definition],
+      parameters: [callback.type],
       result: "void",
     },
     doSomething(): {

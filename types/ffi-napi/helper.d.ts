@@ -1,6 +1,6 @@
 export class Callback {
     constructor(definition: object, callback?: function | null);
-    get definition(): string;
+    get type(): string;
     get pointer(): ref.Pointer<() => any>;
     close(): void;
     register(callback?: function): void;
