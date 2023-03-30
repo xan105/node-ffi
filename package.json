@@ -69,7 +69,7 @@
   },
   "peerDependencies": {
     "ffi-napi": "^4.0.3",
-    "koffi": "^2.3.9"
+    "koffi": "^2.3.13"
   },
   "peerDependenciesMeta": {
     "ffi-napi": {
