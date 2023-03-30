@@ -1,6 +1,6 @@
 {
   "name": "@xan105/ffi",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Foreign Function Interface Helper.",
   "type": "module",
   "exports": {
