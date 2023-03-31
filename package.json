@@ -1,6 +1,6 @@
 {
   "name": "@xan105/ffi",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "description": "Foreign Function Interface Helper.",
   "type": "module",
   "exports": {
@@ -25,7 +25,8 @@
     "ffi",
     "ffi-napi",
     "koffi",
-    "dlopen"
+    "dlopen",
+    "deno"
   ],
   "author": {
     "name": "Anthony Beaumont",
