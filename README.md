@@ -19,7 +19,7 @@ import { dlopen } from "@xan105/ffi/napi";
 import { dlopen } from "@xan105/ffi/koffi";
 
 const lib = dlopen("libm", {
-  "ceil": { 
+  ceil: { 
     result: "double", 
     parameters: [ "double" ] 
   }
@@ -39,6 +39,37 @@ const MessageBoxA = call("MessageBoxA", "int", ["void *", types.LPCSTR, types.LP
 
 const MB_ICONINFORMATION = 0x40;
 MessageBoxA(null, "Hello World!", "Message", MB_ICONINFORMATION);
+```
+
+Callback with Deno like syntax
+
+```
+import { dlopen, Callback} from "@xan105/ffi/koffi";
+
+const library = dlopen(
+  "./callback.so",
+  {
+    set_status_callback: {
+      parameters: ["function"],
+      result: "void"
+    },
+    start_long_operation: {
+      parameters: [],
+      result: "void"
+    }
+  }
+);
+
+const callback = new Callback(
+  {
+    parameters: ["u8"],
+    result: "void",
+  },
+  (success) => {}
+);
+
+library.set_status_callback(callback.pointer);
+library.start_long_operation();
 ```
 
 Install
@@ -168,20 +199,48 @@ await lib.XInputEnable(1);
 
 #### `const types: object`
 
-The FFI Library's primitive types as well as corresponding alias such as Windows specific types (DWORD,...) are exposed for convenience.
+The FFI Library's primitive types as well as corresponding alias are exposed for convenience.
+Such as Deno types (rust) and Windows specific types (DWORD,...).
+
+💡 Windows specific types are grouped together under `win32`.
 
 ```js
-import { types } from "@xan105/ffi/napi";
-//or
-import { types } from "@xan105/ffi/koffi";
+import { types } from "@xan105/ffi/[ napi | koffi ]";
+const { DWORD, LPCSTR } = types.win32;
 ```
 
-When using `koffi` alias are also set with `koffi.alias()`.
+💡 When using `koffi` alias are also set with `koffi.alias()` so you can use them as string.
 
 ```js
 import { load } from "@xan105/ffi/koffi";
 const call = load("user32.dll", { abi: "stdcall" });
 const MessageBoxA = call("MessageBoxA", "int", ["void *", "LPCSTR", "LPCSTR", "uint"]);
+```
+
+⚠️ Types are not exposed under their own namespace because some words are illegal or already in use in JavaScript.
+You can still use destructuring if needed as long as the name is "allowed".
+
+❌ No
+
+```
+import { i32 } from "@xan105/ffi/koffi/types"
+```
+
+✔️ Yes
+```
+import { types } from "@xan105/ffi/koffi"
+const { i32 } = types;
+```
+
+🚫 Forbidden
+
+```
+import { function } from "@xan105/ffi/napi/types"
+```
+
+```
+import { types } from "@xan105/ffi/napi"
+const { function } = types;
 ```
 
 #### `class Callback`
@@ -200,6 +259,10 @@ This is a class wrapper to the FFI library's callback function(s) inspired by De
   
   The pointer to the callback.
   
+  - `address: number | BigInt | null`
+  
+  The memory address of the pointer.
+  
   - `type: unknown`
   
   The type of the callback.
@@ -217,14 +280,11 @@ This is a class wrapper to the FFI library's callback function(s) inspired by De
 ##### Example
   
 ```js
-const callback = new Callback(
-  { parameters: [], result: "void" },
-  () => {},
-);
+import { dlopen, types, Callback } from "@xan105/ffi/...";
 
 const library = dlopen("./callback.so", {
     setCallback: {
-      parameters: [callback.type],
+      parameters: [types.function],
       result: "void",
     },
     doSomething(): {
@@ -232,6 +292,11 @@ const library = dlopen("./callback.so", {
       result: "void",
     },
 });
+
+const callback = new Callback(
+  { parameters: [], result: "void" },
+  () => {},
+);
 
 library.setCallback(callback.pointer);
 library.doSomething();
@@ -243,6 +308,8 @@ callback.close();
 You can also register the callback at a later time:
 
 ```js
+import { dlopen, Callback } from "@xan105/ffi/...";
+
 const callback = new Callback(
   { parameters: [], result: "void" }
 );
