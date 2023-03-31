@@ -48,7 +48,12 @@ Calling directly from a library
 import { load, types } from "@xan105/ffi/[ napi | koffi ]";
 
 const call = load("user32.dll", { abi: "stdcall" });
-const MessageBoxA = call("MessageBoxA", "int", ["void *", types.win32.LPCSTR, types.win32.LPCSTR, "uint"]);
+const MessageBoxA = call("MessageBoxA", "int", [
+  "void *", 
+  types.win32.LPCSTR, 
+  types.win32.LPCSTR, 
+  "uint"
+]);
 
 const MB_ICONINFORMATION = 0x40;
 MessageBoxA(null, "Hello World!", "Message", MB_ICONINFORMATION);
