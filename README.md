@@ -6,6 +6,8 @@ Foreign Function Interface helper. Provides a friendly abstraction/API for:
 - [ffi-napi](https://www.npmjs.com/package/ffi-napi) (MIT)
 - [koffi](https://www.npmjs.com/package/koffi) (MIT)
 
+Syntax is inspired by Deno FFI. The goal was to be able to easily switch from `ffi-napi` to `koffi` or vice versa.
+
 📦 Scoped `@xan105` packages are for my own personal use but feel free to use them.
 
 Example
@@ -14,9 +16,7 @@ Example
 Loading a library with Deno like syntax
 
 ```js
-import { dlopen } from "@xan105/ffi/napi";
-//OR
-import { dlopen } from "@xan105/ffi/koffi";
+import { dlopen } from "@xan105/ffi/[ napi | koffi ]";
 
 const lib = dlopen("libm", {
   ceil: { 
@@ -27,23 +27,36 @@ const lib = dlopen("libm", {
 lib.ceil(1.5); // 2
 ```
 
-Calling from a library
+Calling directly from a library
 
 ```js
-import { load, types } from "@xan105/ffi/napi";
-//OR
-import { load, types} from "@xan105/ffi/koffi";
+import { load, types } from "@xan105/ffi/[ napi | koffi ]";
 
 const call = load("user32.dll", { abi: "stdcall" });
-const MessageBoxA = call("MessageBoxA", "int", ["void *", types.LPCSTR, types.LPCSTR, "uint"]);
+const MessageBoxA = call("MessageBoxA", "int", ["void *", types.win32.LPCSTR, types.win32.LPCSTR, "uint"]);
 
 const MB_ICONINFORMATION = 0x40;
 MessageBoxA(null, "Hello World!", "Message", MB_ICONINFORMATION);
 ```
 
+Async
+
+```js
+import { dlopen } from "@xan105/ffi/[ napi | koffi ]";
+
+const lib = dlopen("libm", {
+  ceil: { 
+    result: "double", 
+    parameters: [ "double" ],
+    nonblocking: true 
+  }
+});
+await lib.ceil(1.5); // 2
+```
+
 Callback with Deno like syntax
 
-```
+```js
 import { dlopen, Callback} from "@xan105/ffi/koffi";
 
 const library = dlopen(
@@ -132,7 +145,7 @@ See the corresponding FFI library for more information on what to pass for `resu
 **Example**:
 
 ```js
-import { load } from "@xan105/ffi/...";
+import { load } from "@xan105/ffi/[ napi | koffi ]";
 const call = load("libm");
 
 const ceil = call("ceil", "double", ["double"])
@@ -184,8 +197,8 @@ If you ever use ffi-napi `ffi.Library()` this will be familiar.
 **Example**
 
 ```js
-import { dlopen, types } from "@xan105/ffi/...";
-const { BOOL } = types;
+import { dlopen, types } from "@xan105/ffi/[ napi | koffi ]";
+const { BOOL } = types.win32;
 
 const lib = dlopen("xinput1_4", {
   "XInputEnable": {
@@ -280,7 +293,7 @@ This is a class wrapper to the FFI library's callback function(s) inspired by De
 ##### Example
   
 ```js
-import { dlopen, types, Callback } from "@xan105/ffi/...";
+import { dlopen, types, Callback } from "@xan105/ffi/[ napi | koffi ]";
 
 const library = dlopen("./callback.so", {
     setCallback: {
@@ -308,7 +321,7 @@ callback.close();
 You can also register the callback at a later time:
 
 ```js
-import { dlopen, Callback } from "@xan105/ffi/...";
+import { dlopen, Callback } from "@xan105/ffi/[ napi | koffi ]";
 
 const callback = new Callback(
   { parameters: [], result: "void" }
@@ -343,7 +356,10 @@ Just a shorthand to `ref.refType(x)` (ffi-napi) and `koffi.out/inout(koffi.point
 Allocate a buffer and get the corresponding data when passing a pointer to allow the called function to manipulate memory.
 
 ```js
-const number = alloc("int"); // allocate Buffer for the output data
+import { dlopen, alloc } from "@xan105/ffi/[ napi | koffi ]";
+const dylib = dlopen(...); //lib loading
+
+const number = alloc("int"); //allocate Buffer for the output data
 dylib.manipulate_number(number.pointer);
 const result = number.get();
 ```
