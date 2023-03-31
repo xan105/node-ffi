@@ -27,18 +27,6 @@ const lib = dlopen("libm", {
 lib.ceil(1.5); // 2
 ```
 
-Calling directly from a library
-
-```js
-import { load, types } from "@xan105/ffi/[ napi | koffi ]";
-
-const call = load("user32.dll", { abi: "stdcall" });
-const MessageBoxA = call("MessageBoxA", "int", ["void *", types.win32.LPCSTR, types.win32.LPCSTR, "uint"]);
-
-const MB_ICONINFORMATION = 0x40;
-MessageBoxA(null, "Hello World!", "Message", MB_ICONINFORMATION);
-```
-
 Async
 
 ```js
@@ -52,6 +40,18 @@ const lib = dlopen("libm", {
   }
 });
 await lib.ceil(1.5); // 2
+```
+
+Calling directly from a library
+
+```js
+import { load, types } from "@xan105/ffi/[ napi | koffi ]";
+
+const call = load("user32.dll", { abi: "stdcall" });
+const MessageBoxA = call("MessageBoxA", "int", ["void *", types.win32.LPCSTR, types.win32.LPCSTR, "uint"]);
+
+const MB_ICONINFORMATION = 0x40;
+MessageBoxA(null, "Hello World!", "Message", MB_ICONINFORMATION);
 ```
 
 Callback with Deno like syntax
@@ -171,8 +171,8 @@ If you ever use ffi-napi `ffi.Library()` this will be familiar.
 ```ts
   {
     name: {
-      result?: any,
-      parameters?: any[],
+      result?: unknown,
+      parameters?: unknown[],
       nonblocking?: boolean,
       symbol?: string | number
     },
@@ -246,10 +246,6 @@ const { i32 } = types;
 ```
 
 🚫 Forbidden
-
-```
-import { function } from "@xan105/ffi/napi/types"
-```
 
 ```
 import { types } from "@xan105/ffi/napi"
