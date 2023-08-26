@@ -47,8 +47,8 @@ Calling directly from a library
 ```js
 import { load, types } from "@xan105/ffi/[ napi | koffi ]";
 
-const call = load("user32.dll", { abi: "stdcall" });
-const MessageBoxA = call("MessageBoxA", "int", [
+const lib = load("user32.dll", { abi: "stdcall" });
+const MessageBoxA = lib("MessageBoxA", "int", [
   "void *", 
   types.win32.LPCSTR, 
   types.win32.LPCSTR, 
@@ -64,7 +64,7 @@ Callback with Deno like syntax
 ```js
 import { dlopen, Callback} from "@xan105/ffi/koffi";
 
-const library = dlopen(
+const lib = dlopen(
   "./callback.so",
   {
     set_status_callback: {
@@ -86,8 +86,9 @@ const callback = new Callback(
   (success) => {}
 );
 
-library.set_status_callback(callback.pointer);
-library.start_long_operation();
+lib.set_status_callback(callback.pointer);
+lib.start_long_operation();
+callback.close();
 ```
 
 Install
@@ -124,12 +125,12 @@ Load the given library path and return an handle function to call library's symb
 - `ignoreLoadingFail?: boolean` (false)
 
 Silent fail if the given library couldn't be loaded.<br />
-💡 Called symbol will be `undefined` in that case.
+💡 Handle will return `undefined` in that case.
 
 - `ignoreMissingSymbol?: boolean` (false)
 
 Silent fail if the given library doesn't have the called symbol.<br />
-💡 Called symbol will be `undefined` in that case.
+💡 Handle will return `undefined` in that case.
 
 - `abi?: string` ("func" for koffi and "default_abi" for ffi-napi)
 
@@ -151,9 +152,8 @@ See the corresponding FFI library for more information on what to pass for `resu
 
 ```js
 import { load } from "@xan105/ffi/[ napi | koffi ]";
-const call = load("libm");
-
-const ceil = call("ceil", "double", ["double"])
+const lib = load("libm");
+const ceil = lib("ceil", "double", ["double"])
 ceil(1.5); //2
 ```
 
