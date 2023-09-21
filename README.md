@@ -139,7 +139,7 @@ ABI convention to use. Use this when you need to ex: winapi x86 requires "stdcal
 **Return**
 
 ```ts
-function(symbol: string | number, result: unknown, parameters: unknown[]): any;
+function(symbol: string | number, result: unknown, parameters: unknown[]): unknown
 ```
 
 💡 `Koffi` can call by ordinal (symbol:number)
@@ -231,8 +231,8 @@ const { DWORD, LPCSTR } = types.win32;
 
 ```js
 import { load } from "@xan105/ffi/koffi";
-const call = load("user32.dll", { abi: "stdcall" });
-const MessageBoxA = call("MessageBoxA", "int", ["void *", "LPCSTR", "LPCSTR", "uint"]);
+const lib = load("user32.dll", { abi: "stdcall" });
+const MessageBoxA = lib("MessageBoxA", "int", ["void *", "LPCSTR", "LPCSTR", "uint"]);
 ```
 
 ⚠️ Types are not exposed under their own namespace because some words are illegal or already in use in JavaScript.
