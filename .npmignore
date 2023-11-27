@@ -2,3 +2,5 @@
 test/
 .eslintrc.json
 tsconfig.json
+#Temporary -- remove me later
+lib/node/

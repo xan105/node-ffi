@@ -1,7 +1,7 @@
 {
   "name": "@xan105/ffi",
   "version": "1.0.0",
-  "description": "Foreign Function Interface Helper.",
+  "description": "Friendly abstraction/API for FFI with a Deno like syntax.",
   "type": "module",
   "exports": {
     "./napi": {
@@ -14,19 +14,19 @@
     }
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   },
   "scripts": {
     "lint": "eslint \"./lib/**/*.{js,mjs}\" \"./types/**/*.d.ts\"",
+    "test": "node --test test/auto/",
     "check": "tsc --noemit --checkjs",
     "declare": "tsc --declaration --emitDeclarationOnly --outDir \"./types\""
   },
   "keywords": [
     "ffi",
-    "ffi-napi",
-    "koffi",
     "dlopen",
-    "deno"
+    "ffi-napi",
+    "koffi"
   ],
   "author": {
     "name": "Anthony Beaumont",
@@ -36,7 +36,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/xan105/node-ffi.git"
+    "url": "git+https://github.com/xan105/node-ffi.git"
   },
   "bugs": {
     "url": "https://github.com/xan105/node-ffi/issues"

@@ -1,5 +1,5 @@
-import { dlopen, types, Callback } from "../lib/ffi-napi/index.js";
-//import { dlopen, types, Callback } from "../lib/koffi/index.js";
+import { dlopen, types, Callback } from "../../lib/ffi-napi/index.js";
+//import { dlopen, types, Callback } from "../../lib/koffi/index.js";
 
 const lib = dlopen("xinput1_4", {
   "XInputEnable": {

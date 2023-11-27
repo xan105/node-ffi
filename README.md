@@ -1,7 +1,7 @@
 About
 =====
 
-Foreign Function Interface helper. Provides a friendly abstraction/API for:
+Foreign Function Interface (FFI) helper. Provides a friendly abstraction/API for:
 
 - [ffi-napi](https://www.npmjs.com/package/ffi-napi) (MIT)
 - [koffi](https://www.npmjs.com/package/koffi) (MIT)
@@ -153,7 +153,7 @@ function(symbol: string | number, result: unknown, parameters: unknown[]): unkno
 
 See the corresponding FFI library for more information on what to pass for `result` and `parameters` as they have string type parser, structure/array/pointer interface, ... and other features.
 
-❌ Handle function throws on error
+❌ Throws on error
 
 **Example**:
 
@@ -226,7 +226,7 @@ If you ever use ffi-napi `ffi.Library()` this will be familiar.
 
   An object with the given symbol(s) as properties.
   
-  ❌ Throws on error, unless the option `errorAtRuntime` is used to change that behavior. 
+  ❌ Throws on error. 
   
 **Example**
 
