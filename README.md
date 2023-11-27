@@ -124,19 +124,26 @@ Load the given library path and return an handle function to call library's symb
 
 - `ignoreLoadingFail?: boolean` (false)
 
-Silent fail if the given library couldn't be loaded.<br />
-💡 Handle will return `undefined` in that case.
+The handle function will silently fail if the given library couldn't be loaded.<br />
+💡 Returns `undefined` in that case.
 
 - `ignoreMissingSymbol?: boolean` (false)
 
-Silent fail if the given library doesn't have the called symbol.<br />
-💡 Handle will return `undefined` in that case.
+The handle function will silently fail if the given library doesn't have the called symbol.<br />
+💡 Returns `undefined` in that case.
 
-- `abi?: string` ("func" for koffi and "default_abi" for ffi-napi)
+- `lazy` (false)
 
-ABI convention to use. Use this when you need to ex: winapi x86 requires "stdcall".
+Use `RTLD_LAZY` (lazy-binding) on POSIX platforms when set to `true` otherwise use `RTLD_NOW`.
+
+- `abi?: string` (koffi: "func" | ffi-napi: "default_abi")
+
+ABI convention to use. Use this when you need to.<br />
+_ex: winapi x86 requires "stdcall"._
 
 **Return**
+
+An handle function to call library's symbol(s).
 
 ```ts
 function(symbol: string | number, result: unknown, parameters: unknown[]): unknown
@@ -146,28 +153,27 @@ function(symbol: string | number, result: unknown, parameters: unknown[]): unkno
 
 See the corresponding FFI library for more information on what to pass for `result` and `parameters` as they have string type parser, structure/array/pointer interface, ... and other features.
 
-❌ Throws on error
+❌ Handle function throws on error
 
 **Example**:
 
 ```js
 import { load } from "@xan105/ffi/[ napi | koffi ]";
 const lib = load("libm");
-const ceil = lib("ceil", "double", ["double"])
+const ceil = lib("ceil", "double", ["double"]);
 ceil(1.5); //2
 ```
 
 #### `dlopen(path: string, symbols: object, option?: object): object`
 
-Open library and define exported symbols. This is a friendly wrapper to `load()` inspired by Deno FFI `dlopen` syntax. 
-
+Open library and define exported symbols. This is a friendly wrapper to `load()` inspired by Deno FFI `dlopen` syntax.<br />
 If you ever use ffi-napi `ffi.Library()` this will be familiar.
 
 **Param**
 
 - `path: string`
 
-  Library path to load
+  Library path to load.
   
 - `symbols: object`
 
@@ -176,28 +182,51 @@ If you ever use ffi-napi `ffi.Library()` this will be familiar.
 ```ts
   {
     name: {
+      symbol?: string | number,
       result?: unknown,
       parameters?: unknown[],
       nonblocking?: boolean,
-      symbol?: string | number
+      stub?: boolean
     },
     ...
   }
 ```
-  
-  By default the property name is used for `symbol` when omitted. Use `symbol` if you are using a different name than the symbol name or if you want to call by ordinal (Koffi).
-  
-  When `nonblocking` is `true` (default false) this will return the promisified `async()` method of the corresponding symbol (see corresponding ffi library asynchronous calling). The rest is the same as for `load()`.
-  
-- option?: object
 
-  Pass option(s) to `load()`. See above.
+  By default the property `name` is used for `symbol`. Use `symbol` if you are using a symbol name different than the given property name or if you want to call by ordinal (Koffi).
+  
+  `result` and `parameters` are the same as for the returned handle from `load()`.<br />
+  If omitted, `result` is set to "void" and `parameters` to an empty array.<br />
+  See the corresponding FFI library for more information on what to pass for `result` and `parameters` as they have string type parser, structure/array/pointer interface, ... and other features.
+  
+  When `nonblocking` is `true` the corresponding symbol will return the promisified `async()` method (asynchronous calling).<br />
+  💡 If set, this superseed the _"global"_ `nonblocking` option (see below).
+  
+  When `stub` is `true` the corresponding symbol will return a no-op if its missing.<br />
+  💡 If set, this superseed the _"global"_ `stub` option (see below).
+  
+- `option?: object`
+
+  Same as `load()` (see above) in addition to the following:
+  
+    + `errorAtRuntime?: boolean` (false)
+    
+      When set to `true`, initialisation error will be thrown on symbol invocation. 
+    
+    + `nonblocking?: boolean` (false)
+    
+      When set to `true`, every symbols will return the corresponding promisified `async()` method (asynchronous calling).<br />
+     💡 This can be overriden per symbol (see symbol definition above).
+    
+    + `stub?: boolean` (false)
+    
+      When set to `true`, every missing symbols will return a no-op.<br />
+      💡 This can be overriden per symbol (see symbol definition above).
   
 **Return** 
 
   An object with the given symbol(s) as properties.
   
-  ❌ Throws on error
+  ❌ Throws on error, unless the option `errorAtRuntime` is used to change that behavior. 
   
 **Example**
 
