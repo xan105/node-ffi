@@ -101,6 +101,11 @@ npm install @xan105/ffi
 Please note that `ffi-napi` and `koffi` are optional peer dependencies.<br />
 Install the one you wish to use yourself (or both 🙃).
 
+### ⚛️ Electron
+
+⚠️ NB: As of this writing `ffi-napi` does not work with Electron >= 21.x.<br />
+Due to [Electron and the V8 Memory Cage](https://www.electronjs.org/blog/v8-memory-cage).
+
 API
 ===
 
@@ -124,17 +129,15 @@ Load the given library path and return an handle function to call library's symb
 
 - `ignoreLoadingFail?: boolean` (false)
 
-The handle function will silently fail if the given library couldn't be loaded.<br />
-💡 Returns `undefined` in that case.
+When set to `true` the handle function will silently fail if the given library couldn't be loaded and return `undefined` in such case.
 
 - `ignoreMissingSymbol?: boolean` (false)
 
-The handle function will silently fail if the given library doesn't have the called symbol.<br />
-💡 Returns `undefined` in that case.
+When set to `true` the handle function will silently fail if the given library doesn't have the called symbol and return `undefined` in such case.
 
 - `lazy` (false)
 
-Use `RTLD_LAZY` (lazy-binding) on POSIX platforms when set to `true` otherwise use `RTLD_NOW`.
+When set to `true` use `RTLD_LAZY` (lazy-binding) on POSIX platforms otherwise use `RTLD_NOW`.
 
 - `abi?: string` (koffi: "func" | ffi-napi: "default_abi")
 
