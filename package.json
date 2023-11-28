@@ -13,6 +13,11 @@
       "default": "./lib/koffi/index.js"
     }
   },
+  "files":[
+    "/lib/ffi-napi",
+    "/lib/koffi",
+    "/types"
+  ],
   "engines": {
     "node": ">=18.0.0"
   },
