@@ -23,7 +23,7 @@
   },
   "scripts": {
     "lint": "eslint \"./lib/**/*.{js,mjs}\" \"./types/**/*.d.ts\"",
-    "test": "node --test test/auto/",
+    "test": "node --test test/",
     "check": "tsc --noemit --checkjs",
     "declare": "tsc --declaration --emitDeclarationOnly --outDir \"./types\""
   },
@@ -31,7 +31,10 @@
     "ffi",
     "dlopen",
     "ffi-napi",
-    "koffi"
+    "koffi",
+    "foreign",
+    "function",
+    "interface"
   ],
   "author": {
     "name": "Anthony Beaumont",
@@ -64,9 +67,9 @@
   "devDependencies": {
     "@types/ffi-napi": "^4.0.7",
     "@types/node": "^20.5.6",
-    "@typescript-eslint/eslint-plugin": "^6.4.1",
-    "@typescript-eslint/parser": "^6.4.1",
-    "eslint": "^8.48.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.1",
+    "@typescript-eslint/parser": "^6.13.1",
+    "eslint": "^8.54.0",
     "typescript": "^5.2.2"
   },
   "dependencies": {
@@ -75,7 +78,7 @@
   },
   "peerDependencies": {
     "ffi-napi": "^4.0.3",
-    "koffi": "^2.6.9"
+    "koffi": "^2.6.10"
   },
   "peerDependenciesMeta": {
     "ffi-napi": {
