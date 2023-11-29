@@ -172,7 +172,7 @@ ceil(1.5); //2
 Open library and define exported symbols. This is a friendly wrapper to `load()` inspired by Deno FFI `dlopen` syntax.<br />
 If you ever use ffi-napi `ffi.Library()` this will be familiar.
 
-**Param**
+**Option**
 
 - `path: string`
 
@@ -442,14 +442,24 @@ dylib.manipulate_number(number.pointer);
 const result = number.get();
 ```
 
-#### `lastError()`: string[]`
+#### `lastError(option?: object): string[] | number`
 
-Shorthand to errno (POSIX) and GetLastError (win32)
-Return the corresponding error code and message as [ message, code ].
+Shorthand to errno (POSIX) and GetLastError (win32).
+
+**Option**
+
+ - `translate?: boolean` (true)
+ 
+When an error code is known it will be 'translated' to its corresponding message and code values as `[message: string, code?: string]`.
+If you only want the raw numerical code set it to `false`.
 
 eg:
-```
+```js
 if(result !== 0) //something went wrong
+
 console.log(lastError())
-//['message', 'ERROR CODE']
+//['No such file or directory', 'ENOENT']
+
+console.log(lastError({ translate: false }));
+// 2
 ```
