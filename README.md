@@ -125,7 +125,7 @@ import ... from "@xan105/ffi/koffi";
 
 Load the given library path and return an handle function to call library's symbol(s).
 
-**Option**
+⚙️ **Option**
 
 - `ignoreLoadingFail?: boolean` (false)
 
@@ -172,7 +172,7 @@ ceil(1.5); //2
 Open library and define exported symbols. This is a friendly wrapper to `load()` inspired by Deno FFI `dlopen` syntax.<br />
 If you ever use ffi-napi `ffi.Library()` this will be familiar.
 
-**Option**
+**Param**
 
 - `path: string`
 
@@ -201,13 +201,12 @@ If you ever use ffi-napi `ffi.Library()` this will be familiar.
   If omitted, `result` is set to "void" and `parameters` to an empty array.<br />
   See the corresponding FFI library for more information on what to pass for `result` and `parameters` as they have string type parser, structure/array/pointer interface, ... and other features.
   
-  When `nonblocking` is `true` the corresponding symbol will return the promisified `async()` method (asynchronous calling).<br />
-  💡 If set, this superseed the _"global"_ `nonblocking` option (see below).
+  When `nonblocking` is `true` the corresponding symbol will return the promisified `async()` method (asynchronous calling). 💡 If set, this superseed the _"global"_ `nonblocking` option (see below).
   
   When `stub` is `true` the corresponding symbol will return a no-op if its missing.<br />
   💡 If set, this superseed the _"global"_ `stub` option (see below).
   
-- `option?: object`
+- ⚙️ `option?: object`
 
   Same as `load()` (see above) in addition to the following:
   
@@ -446,20 +445,20 @@ const result = number.get();
 
 Shorthand to errno (POSIX) and GetLastError (win32).
 
-**Option**
+⚙️ **Option**
 
  - `translate?: boolean` (true)
  
-When an error code is known it will be 'translated' to its corresponding message and code values as `[message: string, code?: string]`.
-If you only want the raw numerical code set it to `false`.
+When an error code is known it will be 'translated' to its corresponding message and code values as<br /> `[message: string, code?: string]`. If you only want the raw numerical code set it to `false`.
 
 eg:
 ```js
-if(result !== 0) //something went wrong
+if(result !== 0){ //something went wrong
 
-console.log(lastError())
-//['No such file or directory', 'ENOENT']
+  console.log(lastError())
+  //['No such file or directory', 'ENOENT']
 
-console.log(lastError({ translate: false }));
-// 2
+  console.log(lastError({ translate: false }));
+  // 2
+}
 ```
