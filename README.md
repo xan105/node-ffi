@@ -382,7 +382,44 @@ callback.close();
 
 #### `pointer(value: unknown, direction?: string): any`
 
-Just a shorthand to `ref.refType(x)` (ffi-napi) and `koffi.out/inout(koffi.pointer(x))` (koffi) to define a pointer.
+Just a shorthand to define a pointer.
+
+```js
+import { dlopen, types, pointer } from "@xan105/ffi/[ napi | koffi ]";
+
+const dylib = dlopen("shell32.dll", {
+  SHQueryUserNotificationState: {
+    result: types.win32.HRESULT,
+    parameters: [
+      pointer(types.win32.ENUM, "out")
+    ]
+  }
+}, { abi: "stdcall" });
+```
+
+#### `struct(schema: unknown): any`
+
+Just a shorthand to define a structure.
+
+```js
+import { dlopen, types, struct, pointer } from "@xan105/ffi/[ napi | koffi ]";
+
+const POINT = struct({ //define struct
+  x: types.win32.LONG,
+  y: types.win32.LONG
+});
+
+const dylib = dlopen("user32.dll", { //lib loading
+    GetCursorPos: {
+      result: types.win32.BOOL,
+      parameters: [ pointer(POINT, "out") ] //struct pointer
+    }
+  }, { abi: "stdcall" });
+  
+const cursorPos = {};
+GetCursorPos(cursorPos);
+console.log(cursorPos) //{ x: 0, y: 0 }
+```
 
 #### `alloc(type: unknown): { pointer: Buffer, get: ()=> unknown }`
 
