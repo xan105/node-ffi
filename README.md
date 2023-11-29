@@ -380,7 +380,7 @@ library.doSomething();
 callback.close();
 ```
 
-#### `pointer(value: unknown, direction?: string): any`
+#### `pointer(value: unknown, direction?: string): unknown`
 
 Just a shorthand to define a pointer.
 
@@ -397,7 +397,7 @@ const dylib = dlopen("shell32.dll", {
 }, { abi: "stdcall" });
 ```
 
-#### `struct(schema: unknown): any`
+#### `struct(schema: unknown): unknown`
 
 Just a shorthand to define a structure.
 
@@ -415,10 +415,18 @@ const dylib = dlopen("user32.dll", { //lib loading
       parameters: [ pointer(POINT, "out") ] //struct pointer
     }
   }, { abi: "stdcall" });
-  
+
+//⚠️ NB: Struct are use differently afterwards:
+
+//Koffi
 const cursorPos = {};
 GetCursorPos(cursorPos);
 console.log(cursorPos) //{ x: 0, y: 0 }
+
+//ffi-napi
+const cursorPos = new POINT();
+getCursorPos(cursorPos.ref());
+console.log({ x: cursorPos.x, y: cursorPos.y });
 ```
 
 #### `alloc(type: unknown): { pointer: Buffer, get: ()=> unknown }`
@@ -432,4 +440,16 @@ const dylib = dlopen(...); //lib loading
 const number = alloc("int"); //allocate Buffer for the output data
 dylib.manipulate_number(number.pointer);
 const result = number.get();
+```
+
+#### `lastError()`: string[]`
+
+Shorthand to errno (POSIX) and GetLastError (win32)
+Return the corresponding error code and message as [ message, code ].
+
+eg:
+```
+if(result !== 0) //something went wrong
+console.log(lastError())
+//['message', 'ERROR CODE']
 ```
