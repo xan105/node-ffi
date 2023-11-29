@@ -9,9 +9,11 @@ export class Callback {
     #private;
 }
 export function pointer(value: unknown, direction?: string): koffi.IKoffiCType;
+export function struct(schema: unknown): unknown;
 export function alloc(type: unknown): {
     pointer: Buffer;
     get: () => unknown;
 };
+export function lastError(option?: { translate?: boolean }): string[] | number;
 import koffi from "koffi";
 import { Buffer } from "buffer";
