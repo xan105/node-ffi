@@ -1,7 +1,7 @@
 About
 =====
 
-Foreign Function Interface helper. Provides a friendly abstraction/API for:
+Foreign Function Interface (FFI) helper. Provides a friendly abstraction/API for:
 
 - [ffi-napi](https://www.npmjs.com/package/ffi-napi) (MIT)
 - [koffi](https://www.npmjs.com/package/koffi) (MIT)
@@ -101,6 +101,11 @@ npm install @xan105/ffi
 Please note that `ffi-napi` and `koffi` are optional peer dependencies.<br />
 Install the one you wish to use yourself (or both 🙃).
 
+### ⚛️ Electron
+
+⚠️ NB: As of this writing `ffi-napi` does not work with Electron >= 21.x.<br />
+Due to [Electron and the V8 Memory Cage](https://www.electronjs.org/blog/v8-memory-cage).
+
 API
 ===
 
@@ -120,23 +125,28 @@ import ... from "@xan105/ffi/koffi";
 
 Load the given library path and return an handle function to call library's symbol(s).
 
-**Option**
+⚙️ **Option**
 
 - `ignoreLoadingFail?: boolean` (false)
 
-Silent fail if the given library couldn't be loaded.<br />
-💡 Handle will return `undefined` in that case.
+When set to `true` the handle function will silently fail if the given library couldn't be loaded and return `undefined` in such case.
 
 - `ignoreMissingSymbol?: boolean` (false)
 
-Silent fail if the given library doesn't have the called symbol.<br />
-💡 Handle will return `undefined` in that case.
+When set to `true` the handle function will silently fail if the given library doesn't have the called symbol and return `undefined` in such case.
 
-- `abi?: string` ("func" for koffi and "default_abi" for ffi-napi)
+- `lazy` (false)
 
-ABI convention to use. Use this when you need to ex: winapi x86 requires "stdcall".
+When set to `true` use `RTLD_LAZY` (lazy-binding) on POSIX platforms otherwise use `RTLD_NOW`.
+
+- `abi?: string` (koffi: "func" | ffi-napi: "default_abi")
+
+ABI convention to use. Use this when you need to.<br />
+_ex: winapi x86 requires "stdcall"._
 
 **Return**
+
+An handle function to call library's symbol(s).
 
 ```ts
 function(symbol: string | number, result: unknown, parameters: unknown[]): unknown
@@ -153,21 +163,20 @@ See the corresponding FFI library for more information on what to pass for `resu
 ```js
 import { load } from "@xan105/ffi/[ napi | koffi ]";
 const lib = load("libm");
-const ceil = lib("ceil", "double", ["double"])
+const ceil = lib("ceil", "double", ["double"]);
 ceil(1.5); //2
 ```
 
 #### `dlopen(path: string, symbols: object, option?: object): object`
 
-Open library and define exported symbols. This is a friendly wrapper to `load()` inspired by Deno FFI `dlopen` syntax. 
-
+Open library and define exported symbols. This is a friendly wrapper to `load()` inspired by Deno FFI `dlopen` syntax.<br />
 If you ever use ffi-napi `ffi.Library()` this will be familiar.
 
 **Param**
 
 - `path: string`
 
-  Library path to load
+  Library path to load.
   
 - `symbols: object`
 
@@ -176,28 +185,50 @@ If you ever use ffi-napi `ffi.Library()` this will be familiar.
 ```ts
   {
     name: {
+      symbol?: string | number,
       result?: unknown,
       parameters?: unknown[],
       nonblocking?: boolean,
-      symbol?: string | number
+      stub?: boolean
     },
     ...
   }
 ```
-  
-  By default the property name is used for `symbol` when omitted. Use `symbol` if you are using a different name than the symbol name or if you want to call by ordinal (Koffi).
-  
-  When `nonblocking` is `true` (default false) this will return the promisified `async()` method of the corresponding symbol (see corresponding ffi library asynchronous calling). The rest is the same as for `load()`.
-  
-- option?: object
 
-  Pass option(s) to `load()`. See above.
+  By default the property `name` is used for `symbol`. Use `symbol` if you are using a symbol name different than the given property name or if you want to call by ordinal (Koffi).
+  
+  `result` and `parameters` are the same as for the returned handle from `load()`.<br />
+  If omitted, `result` is set to "void" and `parameters` to an empty array.<br />
+  See the corresponding FFI library for more information on what to pass for `result` and `parameters` as they have string type parser, structure/array/pointer interface, ... and other features.
+  
+  When `nonblocking` is `true` the corresponding symbol will return the promisified `async()` method (asynchronous calling). 💡 If set, this superseed the _"global"_ `nonblocking` option (see below).
+  
+  When `stub` is `true` the corresponding symbol will return a no-op if its missing.<br />
+  💡 If set, this superseed the _"global"_ `stub` option (see below).
+  
+- ⚙️ `option?: object`
+
+  Same as `load()` (see above) in addition to the following:
+  
+    + `errorAtRuntime?: boolean` (false)
+    
+      When set to `true`, initialisation error will be thrown on symbol invocation. 
+    
+    + `nonblocking?: boolean` (false)
+    
+      When set to `true`, every symbols will return the corresponding promisified `async()` method (asynchronous calling).<br />
+     💡 This can be overriden per symbol (see symbol definition above).
+    
+    + `stub?: boolean` (false)
+    
+      When set to `true`, every missing symbols will return a no-op.<br />
+      💡 This can be overriden per symbol (see symbol definition above).
   
 **Return** 
 
   An object with the given symbol(s) as properties.
   
-  ❌ Throws on error
+  ❌ Throws on error. 
   
 **Example**
 
@@ -348,9 +379,54 @@ library.doSomething();
 callback.close();
 ```
 
-#### `pointer(value: unknown, direction?: string): any`
+#### `pointer(value: unknown, direction?: string): unknown`
 
-Just a shorthand to `ref.refType(x)` (ffi-napi) and `koffi.out/inout(koffi.pointer(x))` (koffi) to define a pointer.
+Just a shorthand to define a pointer.
+
+```js
+import { dlopen, types, pointer } from "@xan105/ffi/[ napi | koffi ]";
+
+const dylib = dlopen("shell32.dll", {
+  SHQueryUserNotificationState: {
+    result: types.win32.HRESULT,
+    parameters: [
+      pointer(types.win32.ENUM, "out")
+    ]
+  }
+}, { abi: "stdcall" });
+```
+
+#### `struct(schema: unknown): unknown`
+
+Just a shorthand to define a structure.
+
+```js
+import { dlopen, types, struct, pointer } from "@xan105/ffi/[ napi | koffi ]";
+
+const POINT = struct({ //define struct
+  x: types.win32.LONG,
+  y: types.win32.LONG
+});
+
+const dylib = dlopen("user32.dll", { //lib loading
+    GetCursorPos: {
+      result: types.win32.BOOL,
+      parameters: [ pointer(POINT, "out") ] //struct pointer
+    }
+  }, { abi: "stdcall" });
+
+//⚠️ NB: Struct are use differently afterwards:
+
+//Koffi
+const cursorPos = {};
+GetCursorPos(cursorPos);
+console.log(cursorPos) //{ x: 0, y: 0 }
+
+//ffi-napi
+const cursorPos = new POINT();
+getCursorPos(cursorPos.ref());
+console.log({ x: cursorPos.x, y: cursorPos.y });
+```
 
 #### `alloc(type: unknown): { pointer: Buffer, get: ()=> unknown }`
 
@@ -363,4 +439,26 @@ const dylib = dlopen(...); //lib loading
 const number = alloc("int"); //allocate Buffer for the output data
 dylib.manipulate_number(number.pointer);
 const result = number.get();
+```
+
+#### `lastError(option?: object): string[] | number`
+
+Shorthand to errno (POSIX) and GetLastError (win32).
+
+⚙️ **Option**
+
+ - `translate?: boolean` (true)
+ 
+When an error code is known it will be 'translated' to its corresponding message and code values as<br /> `[message: string, code?: string]`. If you only want the raw numerical code set it to `false`.
+
+eg:
+```js
+if(result !== 0){ //something went wrong
+
+  console.log(lastError())
+  //['No such file or directory', 'ENOENT']
+
+  console.log(lastError({ translate: false }));
+  // 2
+}
 ```

@@ -1,7 +1,7 @@
 {
   "name": "@xan105/ffi",
   "version": "1.0.0",
-  "description": "Foreign Function Interface Helper.",
+  "description": "Friendly abstraction/API for FFI with a Deno like syntax.",
   "type": "module",
   "exports": {
     "./napi": {
@@ -13,20 +13,28 @@
       "default": "./lib/koffi/index.js"
     }
   },
+  "files": [
+    "/lib/ffi-napi",
+    "/lib/koffi",
+    "/types"
+  ],
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   },
   "scripts": {
     "lint": "eslint \"./lib/**/*.{js,mjs}\" \"./types/**/*.d.ts\"",
+    "test": "node --test test/",
     "check": "tsc --noemit --checkjs",
     "declare": "tsc --declaration --emitDeclarationOnly --outDir \"./types\""
   },
   "keywords": [
     "ffi",
+    "dlopen",
     "ffi-napi",
     "koffi",
-    "dlopen",
-    "deno"
+    "foreign",
+    "function",
+    "interface"
   ],
   "author": {
     "name": "Anthony Beaumont",
@@ -36,7 +44,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/xan105/node-ffi.git"
+    "url": "git+https://github.com/xan105/node-ffi.git"
   },
   "bugs": {
     "url": "https://github.com/xan105/node-ffi/issues"
@@ -59,18 +67,18 @@
   "devDependencies": {
     "@types/ffi-napi": "^4.0.7",
     "@types/node": "^20.5.6",
-    "@typescript-eslint/eslint-plugin": "^6.4.1",
-    "@typescript-eslint/parser": "^6.4.1",
-    "eslint": "^8.48.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.1",
+    "@typescript-eslint/parser": "^6.13.1",
+    "eslint": "^8.54.0",
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "@xan105/error": "^1.6.1",
-    "@xan105/is": "^2.8.2"
+    "@xan105/error": "^1.6.2",
+    "@xan105/is": "^2.9.2"
   },
   "peerDependencies": {
     "ffi-napi": "^4.0.3",
-    "koffi": "^2.6.1"
+    "koffi": "^2.6.10"
   },
   "peerDependenciesMeta": {
     "ffi-napi": {
