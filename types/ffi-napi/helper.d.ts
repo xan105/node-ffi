@@ -8,10 +8,11 @@ export class Callback {
     #private;
 }
 export function pointer(value: unknown): ref.Type<ref.Pointer<unknown>>;
-export function struct(schema: unknown): unknown;
+export function struct(schema: unknown): ref_struct.StructType<unknown>;
 export function alloc(type: unknown): {
     pointer: Buffer;
     get: () => unknown;
 };
 export function lastError(option?: { translate?: boolean }): string[] | number;
 import ref from "ref-napi";
+import ref_struct from "ref-struct-di";

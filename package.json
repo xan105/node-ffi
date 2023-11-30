@@ -16,7 +16,8 @@
   "files": [
     "/lib/ffi-napi",
     "/lib/koffi",
-    "/types"
+    "/types/ffi-napi",
+    "/types/koffi"
   ],
   "engines": {
     "node": ">=18.0.0"
@@ -74,7 +75,7 @@
   },
   "dependencies": {
     "@xan105/error": "^1.6.2",
-    "@xan105/is": "^2.9.2"
+    "@xan105/is": "^2.9.3"
   },
   "peerDependencies": {
     "ffi-napi": "^4.0.3",
