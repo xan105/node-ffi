@@ -27,7 +27,7 @@ const lib = dlopen("libm", {
 lib.ceil(1.5); // 2
 ```
 
-Async
+Asynchronous calling
 
 ```js
 import { dlopen } from "@xan105/ffi/[ napi | koffi ]";
@@ -142,7 +142,20 @@ When set to `true` use `RTLD_LAZY` (lazy-binding) on POSIX platforms otherwise u
 - `abi?: string` (koffi: "func" | ffi-napi: "default_abi")
 
 ABI convention to use. Use this when you need to.<br />
-_ex: winapi x86 requires "stdcall"._
+_ex: Win32 API (x86) requires "stdcall"._
+
+```js
+[
+  "cdecl", "ms_cdecl", //koffi & ffi-napi
+  "stdcall", //koffi & ffi-napi
+  "fastcall", //koffi & ffi-napi
+  "thiscall", //koffi & ffi-napi
+  "win64", //ffi-napi
+  "unix64", //ffi-napi
+  "sysv", //ffi-napi
+  "vfp" //ffi-napi
+]
+```
 
 **Return**
 
@@ -451,7 +464,7 @@ Shorthand to errno (POSIX) and GetLastError (win32).
  
 When an error code is known it will be 'translated' to its corresponding message and code values as<br /> `[message: string, code?: string]`. If you only want the raw numerical code set it to `false`.
 
-eg:
+ex:
 ```js
 if(result !== 0){ //something went wrong
 
