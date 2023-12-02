@@ -427,18 +427,30 @@ const dylib = dlopen("user32.dll", { //lib loading
       parameters: [ pointer(POINT, "out") ] //struct pointer
     }
   }, { abi: "stdcall" });
+```
 
-//⚠️ NB: Struct are use differently afterwards:
+⚠️ NB: Struct are use differently afterwards:
 
-//Koffi
+- Koffi
+
+```js
 const cursorPos = {};
 GetCursorPos(cursorPos);
-console.log(cursorPos) //{ x: 0, y: 0 }
+console.log(cursorPos) 
+//{ x: 0, y: 0 }
+```
 
-//ffi-napi
+- ffi-napi
+
+```js
 const cursorPos = new POINT();
-getCursorPos(cursorPos.ref());
-console.log({ x: cursorPos.x, y: cursorPos.y });
+GetCursorPos(cursorPos.ref());
+
+//access the properties directly
+console.log({ x: cursorPos.x, y: cursorPos.y }); //{ x: 0, y: 0 }
+
+//or call .toObject()/.toJSON() (alias) to get a JS Object
+console.log(cursorPos.toObject()); //{ x: 0, y: 0 }
 ```
 
 #### `alloc(type: unknown): { pointer: Buffer, get: ()=> unknown }`

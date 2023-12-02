@@ -42,7 +42,7 @@ for (const [name, ffi] of Object.entries(APIs))
     {
       const cursorPos = new POINT();
       getCursorPos(cursorPos.ref());
-      const actual = { x: cursorPos.x, y: cursorPos.y };
+      const actual = cursorPos.toObject();
       assert.deepEqual(actual, expected);
     } 
     else 
