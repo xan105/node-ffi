@@ -1,6 +1,6 @@
 {
   "name": "@xan105/ffi",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Friendly abstraction/API for FFI with a Deno like syntax.",
   "type": "module",
   "exports": {
