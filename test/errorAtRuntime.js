@@ -11,7 +11,7 @@ for (const [name, ffi] of Object.entries(APIs))
 {
   
   test(`[${name}] errorAtRuntime: fail load lib`, {
-    skip: isWindows ? false : "This test runs on Windows" 
+    skip: isWindows() ? false : "This test runs on Windows" 
   }, () => {
     
     const lib = ffi.dlopen("xoutput1_4", { //fake
@@ -36,7 +36,7 @@ for (const [name, ffi] of Object.entries(APIs))
   });
   
   test(`[${name}] errorAtRuntime: fail load lib (ignore)`, {
-    skip: isWindows ? false : "This test runs on Windows" 
+    skip: isWindows() ? false : "This test runs on Windows" 
   }, () => {
     
     const lib = ffi.dlopen("xoutput1_4", { //fake
@@ -53,7 +53,7 @@ for (const [name, ffi] of Object.entries(APIs))
   }); 
   
   test(`[${name}] errorAtRuntime: missing symbol`, {
-    skip: isWindows ? false : "This test runs on Windows" 
+    skip: isWindows() ? false : "This test runs on Windows" 
   }, () => {
     
     const lib = ffi.dlopen("xinput1_4", {
@@ -79,7 +79,7 @@ for (const [name, ffi] of Object.entries(APIs))
   });
   
   test(`[${name}] errorAtRuntime: missing symbol (ignore)`, {
-    skip: isWindows ? false : "This test runs on Windows" 
+    skip: isWindows() ? false : "This test runs on Windows" 
   }, () => {
     
     const lib = ffi.dlopen("xinput1_4", {

@@ -11,7 +11,7 @@ for (const [name, ffi] of Object.entries(APIs))
 {
   
   test(`[${name}] nonblocking (on)`, {
-    skip: isWindows ? false : "This test runs on Windows" 
+    skip: isWindows() ? false : "This test runs on Windows" 
   }, () => {
     
     const { setCursorPos } = ffi.dlopen("user32.dll", {
@@ -34,7 +34,7 @@ for (const [name, ffi] of Object.entries(APIs))
   });
   
   test(`[${name}] nonblocking (off)`, {
-    skip: isWindows ? false : "This test runs on Windows" 
+    skip: isWindows() ? false : "This test runs on Windows" 
   }, () => {
     
     const { setCursorPos } = ffi.dlopen("user32.dll", {

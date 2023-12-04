@@ -11,7 +11,7 @@ for (const [name, ffi] of Object.entries(APIs))
 {
   
   test(`[${name}] lastError()`, {
-    skip: isWindows ? false : "This test runs on Windows" 
+    skip: isWindows() ? false : "This test runs on Windows" 
   }, () => {
     
     const lib = ffi.dlopen("kernel32", {

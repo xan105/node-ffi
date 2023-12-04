@@ -11,7 +11,7 @@ for (const [name, ffi] of Object.entries(APIs))
 {
   
   test(`[${name}] Basic dylib calling`, {
-    skip: isWindows ? false : "This test runs on Windows" 
+    skip: isWindows() ? false : "This test runs on Windows" 
   }, () => {
     
     const lib = ffi.load("user32.dll", { abi: "stdcall" });

@@ -18,7 +18,7 @@ for (const [name, ffi] of Object.entries(APIs))
 {
   
   test(`[${name}] alloc`, {
-    skip: isWindows ? false : "This test runs on Windows"
+    skip: isWindows() ? false : "This test runs on Windows"
   }, () => {
     
     const { SHQueryUserNotificationState } = ffi.dlopen("shell32.dll", {
