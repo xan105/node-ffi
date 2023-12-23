@@ -72,7 +72,7 @@
     "@typescript-eslint/parser": "^6.13.1",
     "eslint": "^8.54.0",
     "ffi-napi": "^4.0.3",
-    "koffi": "^2.6.10",
+    "koffi": "^2.7.0",
     "typescript": "^5.2.2"
   },
   "dependencies": {
@@ -81,7 +81,7 @@
   },
   "peerDependencies": {
     "ffi-napi": "^4.0.3",
-    "koffi": "^2.6.10"
+    "koffi": "^2.7.0"
   },
   "peerDependenciesMeta": {
     "ffi-napi": {

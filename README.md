@@ -309,7 +309,7 @@ This is a class wrapper to the FFI library's callback function(s) inspired by De
 
 ##### Constructor
   
-  `(definition: { result: unknown, parameters: unknown[] }, callback?: Function | null)`
+  `(definition: { result: unknown, parameters: unknown[], abi?: string }, callback?: Function | null)`
   
 ##### Properties
   
