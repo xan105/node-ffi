@@ -31,26 +31,17 @@ for (const [name, ffi] of Object.entries(APIs))
       getCursorPos: {
         symbol: "GetCursorPos",
         result: ffi.types.win32.BOOL,
-        parameters: [ ffi.pointer(POINT, "out") ]
+        parameters: [ ffi.pointer(POINT.type, "out") ]
       }
     }, { abi: "stdcall" });
 
     const expected = { x: 1, y: 1 };
     setCursorPos(...Object.values(expected));
     
-    if(name === "ffi-napi")
-    {
-      const cursorPos = new POINT();
-      getCursorPos(cursorPos.ref());
-      const actual = cursorPos.toObject();
-      assert.deepEqual(actual, expected);
-    } 
-    else 
-    {
-      const actual = {};
-      getCursorPos(actual);
-      assert.deepEqual(actual, expected);
-    }
+    const cursorPos = POINT.create();
+    getCursorPos(cursorPos.pointer);
+    const actual = cursorPos.values;
+    assert.deepEqual(actual, expected);
   });
   
 };

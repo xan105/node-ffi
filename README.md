@@ -313,15 +313,15 @@ This is a class wrapper to the FFI library's callback function(s) inspired by De
   
 ##### Properties
   
-  - `pointer: unknown`
+  - `pointer: unknown` _(read only)_
   
   The pointer to the callback.
   
-  - `address: number | BigInt | null`
+  - `address: number | BigInt | null` _(read only)_
   
   The memory address of the pointer.
   
-  - `type: unknown`
+  - `type: unknown` _(read only)_
   
   The type of the callback.
   
@@ -409,10 +409,33 @@ const dylib = dlopen("shell32.dll", {
 }, { abi: "stdcall" });
 ```
 
-#### `struct(schema: unknown): unknown`
+#### `struct(schema: object): object`
 
-Just a shorthand to define a structure.
+💡 It is worth noting that while the goal of this lib is to write the same code with different FFI libraries; 
+when using Koffi you can just use Koffi's `struct()` function as Koffi converts JS objects to C structs, and vice-versa.
 
+Define a structure. The returned object has 2 properties:
+
+- `type: unknown` 
+
+The type of the struct.
+
+- `create: ()=> Class instance`
+
+Return an instance of a class wrapper to the FFI library's struct functions.
+
+##### Class properties
+  
+  - `pointer: unknown` _(read only)_
+  
+  The pointer to the struct.
+  
+  - `values: object`
+  
+  Get or set the values of the struct.
+  
+##### Example
+  
 ```js
 import { dlopen, types, struct, pointer } from "@xan105/ffi/[ napi | koffi ]";
 
@@ -424,33 +447,13 @@ const POINT = struct({ //define struct
 const dylib = dlopen("user32.dll", { //lib loading
     GetCursorPos: {
       result: types.win32.BOOL,
-      parameters: [ pointer(POINT, "out") ] //struct pointer
+      parameters: [ pointer(POINT.type, "out") ] //struct pointer
     }
   }, { abi: "stdcall" });
-```
 
-⚠️ NB: Struct are use differently afterwards:
-
-- Koffi
-
-```js
-const cursorPos = {};
-GetCursorPos(cursorPos);
-console.log(cursorPos) 
-//{ x: 0, y: 0 }
-```
-
-- ffi-napi
-
-```js
-const cursorPos = new POINT();
-GetCursorPos(cursorPos.ref());
-
-//access the properties directly
-console.log({ x: cursorPos.x, y: cursorPos.y }); //{ x: 0, y: 0 }
-
-//or call .toObject()/.toJSON() (alias) to get a JS Object
-console.log(cursorPos.toObject()); //{ x: 0, y: 0 }
+const cursorPos = POINT.create();
+GetCursorPos(cursorPos.pointer);
+console.log(cursorPos.values) //{ x: 0, y: 0 }
 ```
 
 #### `alloc(type: unknown): { pointer: Buffer, get: ()=> unknown }`
