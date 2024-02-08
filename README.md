@@ -409,7 +409,51 @@ const dylib = dlopen("shell32.dll", {
 }, { abi: "stdcall" });
 ```
 
-#### `struct(schema: object): object`
+#### `struct(schema: unknown): unknown`
+
+Just a shorthand to define a structure.
+
+```js
+import { dlopen, types, struct, pointer } from "@xan105/ffi/[ napi | koffi ]";
+
+const POINT = struct({ //define struct
+  x: types.win32.LONG,
+  y: types.win32.LONG
+});
+
+const dylib = dlopen("user32.dll", { //lib loading
+    GetCursorPos: {
+      result: types.win32.BOOL,
+      parameters: [ pointer(POINT, "out") ] //struct pointer
+    }
+  }, { abi: "stdcall" });
+```
+
+⚠️ NB: Struct are use differently afterwards:
+
+- Koffi
+
+```js
+const cursorPos = {};
+GetCursorPos(cursorPos);
+console.log(cursorPos) 
+//{ x: 0, y: 0 }
+```
+
+- ffi-napi
+
+```js
+const cursorPos = new POINT();
+GetCursorPos(cursorPos.ref());
+
+//access the properties directly
+console.log({ x: cursorPos.x, y: cursorPos.y }); //{ x: 0, y: 0 }
+
+//or call .toObject()/.toJSON() (alias) to get a JS Object
+console.log(cursorPos.toObject()); //{ x: 0, y: 0 }
+```
+
+#### `structEx(schema: object): object`
 
 💡 It is worth noting that while the goal of this lib is to write the same code with different FFI libraries; 
 when using Koffi you can just use Koffi's `struct()` function as Koffi converts JS objects to C structs, and vice-versa.

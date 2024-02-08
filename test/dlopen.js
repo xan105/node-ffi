@@ -14,7 +14,7 @@ for (const [name, ffi] of Object.entries(APIs))
     skip: isWindows() ? false : "This test runs on Windows"
   }, () => {
     
-    const POINT = ffi.struct({
+    const POINT = ffi.structEx({
       x: ffi.types.win32.LONG,
       y: ffi.types.win32.LONG
     });

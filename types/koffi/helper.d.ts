@@ -8,6 +8,7 @@ export class Callback {
     #private;
 }
 export function pointer(value: unknown, direction?: string): koffi.IKoffiCType;
+export function struct(schema: unknown): koffi.IKoffiCType;
 declare class Struct {
     constructor(type: koffi.IKoffiCType);
     get pointer(): object;
@@ -15,7 +16,7 @@ declare class Struct {
     get values(): object;
     #private;
 }
-export function struct(schema: object): { type: koffi.IKoffiCType, create: () => Struct };
+export function structEx(schema: object): { type: koffi.IKoffiCType, create: () => Struct };
 export function alloc(type: unknown): {
     pointer: Buffer;
     get: () => unknown;

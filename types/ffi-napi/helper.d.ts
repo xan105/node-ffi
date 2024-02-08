@@ -8,6 +8,7 @@ export class Callback {
     #private;
 }
 export function pointer(value: unknown): ref.Type<ref.Pointer<unknown>>;
+export function struct(schema: unknown): ref_struct.StructType<unknown>;
 declare class Struct {
     constructor(schema: object);
     get pointer(): ref_struct.StructType<unknown>;
@@ -15,7 +16,7 @@ declare class Struct {
     get values(): object;
     #private;
 }
-export function struct(schema: object): { type: ref.Type<unknown>, create: () => Struct };
+export function structEx(schema: object): { type: ref.Type<unknown>, create: () => Struct };
 export function alloc(type: unknown): {
     pointer: Buffer;
     get: () => unknown;

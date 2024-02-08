@@ -20,7 +20,7 @@ for (const [name, ffi] of Object.entries(APIs))
       ffi.types.i32
     ]);
     
-    const POINT = ffi.struct({
+    const POINT = ffi.structEx({
       x: ffi.types.win32.LONG,
       y: ffi.types.win32.LONG
     });

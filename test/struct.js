@@ -12,7 +12,7 @@ for (const [name, ffi] of Object.entries(APIs))
 
   test(`[${name}] Struct: no values`, () => {
     
-      const POINT = new ffi.struct({
+      const POINT = new ffi.structEx({
         x: ffi.types.i32,
         y: ffi.types.i32
       });
@@ -25,7 +25,7 @@ for (const [name, ffi] of Object.entries(APIs))
   
   test(`[${name}] Struct: get/set values`, () => {
     
-      const POINT = new ffi.struct({
+      const POINT = new ffi.structEx({
         x: ffi.types.i32,
         y: ffi.types.i32
       });
