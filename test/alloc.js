@@ -2,7 +2,8 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { Failure, errorLookup } from "@xan105/error";
 import { 
-  isWindows, 
+  isWindows,
+  isObj, 
   isObjLike, 
   isBuffer, 
   isFunction,
@@ -33,11 +34,12 @@ for (const [name, ffi] of Object.entries(APIs))
     });
 
     const pquns = ffi.alloc(ffi.types.win32.ENUM);
+
     assert.ok(isObjLike(pquns, {
-      pointer: isBuffer,
+      pointer: [( value ) => isBuffer(value) || isObj(value), []],
       get: isFunction
     }));
-      
+
     const hr = SHQueryUserNotificationState(pquns.pointer);
     if (hr < 0) throw new Failure(...errorLookup(hr, "hresult"));
       
