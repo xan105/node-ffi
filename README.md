@@ -135,9 +135,13 @@ When set to `true` the handle function will silently fail if the given library c
 
 When set to `true` the handle function will silently fail if the given library doesn't have the called symbol and return `undefined` in such case.
 
-- `lazy` (false)
+- `lazy?: boolean` (false)
 
 When set to `true` use `RTLD_LAZY` (lazy-binding) on POSIX platforms otherwise use `RTLD_NOW`.
+
+- `global?: boolean` (false)
+
+When set to `true` use `RTLD_GLOBAL` on POSIX platforms otherwise use `RTLD_LOCAL`.
 
 - `abi?: string` (koffi: "func" | ffi-napi: "default_abi")
 
