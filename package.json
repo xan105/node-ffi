@@ -16,8 +16,10 @@
   "files": [
     "/lib/ffi-napi",
     "/lib/koffi",
+    "/lib/util.js",
     "/types/ffi-napi",
-    "/types/koffi"
+    "/types/koffi",
+    "/types/util.d.ts"
   ],
   "engines": {
     "node": ">=20.18.0"
