@@ -2,7 +2,8 @@ declare interface loadOption {
   ignoreLoadingFail?: boolean,
   ignoreMissingSymbol?: boolean,
   lazy?: boolean,
-  abi?: string
+  abi?: string,
+  integrity?: string
 }
 export function load(path: string, option?: loadOption): (symbol: string | number, result: unknown, parameters: unknown[]) => unknown;
 

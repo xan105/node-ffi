@@ -161,6 +161,10 @@ _ex: Win32 API (x86) requires "stdcall"._
 ]
 ```
 
+- `integrity?: string` (none)
+
+Subresource Integrity.
+
 **Return**
 
 An handle function to call library's symbol(s).
