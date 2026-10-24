@@ -3,8 +3,8 @@ import assert from "node:assert/strict";
 import { Failure, errorLookup } from "@xan105/error";
 import { 
   isWindows,
-  isObj, 
   isObjLike, 
+  isBigInt,
   isBuffer, 
   isFunction,
   isIntegerPositive
@@ -36,7 +36,7 @@ for (const [name, ffi] of Object.entries(APIs))
     const pquns = ffi.alloc(ffi.types.win32.ENUM);
 
     assert.ok(isObjLike(pquns, {
-      pointer: [( value ) => isBuffer(value) || isObj(value), []],
+      pointer: [( value ) => isBuffer(value) || isBigInt(value), []],
       get: isFunction
     }));
 

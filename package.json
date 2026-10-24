@@ -26,7 +26,7 @@
   },
   "scripts": {
     "lint": "eslint \"./lib/**/*.{js,mjs}\" \"./types/**/*.d.ts\"",
-    "test": "node --test",
+    "test": "node --test --trace-deprecation",
     "check": "tsc --noemit --checkjs",
     "declare": "tsc --declaration --emitDeclarationOnly --outDir \"./types\""
   },
@@ -70,7 +70,7 @@
     "@typescript-eslint/parser": "^7.6.0",
     "eslint": "^8.57.0",
     "ffi-napi": "^4.0.3",
-    "koffi": "^2.9.1",
+    "koffi": "^3.3.3",
     "typescript": "^5.4.4"
   },
   "dependencies": {
